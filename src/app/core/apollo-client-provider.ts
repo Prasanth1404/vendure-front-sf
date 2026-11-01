@@ -114,7 +114,7 @@ export function apolloOptionsFactory(
             const context = operation.getContext();
             const authHeader = context.response.headers.get('vendure-auth-token');
             if (authHeader && isPlatformBrowser(platformId)) {
-                // If the auth token has been returned by the Vendure
+                // If the auth token has been returned by the API
                 // server, we store it in localStorage
                 localStorage.setItem(AUTH_TOKEN_KEY, authHeader);
             }
