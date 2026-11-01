@@ -1,0 +1,55 @@
+name: ecr-build
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: 
+    inputs:
+      image_branch:
+        description: "Input Your Branch"
+        required: false
+        type: string
+
+      image_commit_sha:
+        description: "Input Your Commit SHA ID"
+        required: false
+        type: string
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: vendure-app
+
+    steps:
+      # Step 1: Checkout vendure-front-sf repo
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PERSONAL_TOKEN }}
+      
+      # Step 2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+
+
+      # Step 3
+      - name: Build the vendure-front-sf
+        run: |
+          docker build -t ${{ secrets.ECR_PUSH_STRING }}/vendure-sf:${{ github.run_number }} .
+          docker tag ${{ secrets.ECR_PUSH_STRING }}/vendure-sf:${{ github.run_number }} ${{ secrets.ECR_PUSH_STRING }}/vendure-sf:latest
+
+      # Step 4 
+      - name: Image Push
+        run: | 
+          docker push ${{ secrets.ECR_PUSH_STRING }}/gold-prize:${{ github.run_number }}
+          docker push ${{ secrets.ECR_PUSH_STRING }}/gold-prize:latest
