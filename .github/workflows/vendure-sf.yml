@@ -51,5 +51,5 @@ jobs:
       # Step 4 
       - name: Image Push
         run: | 
-          docker push ${{ secrets.ECR_PUSH_STRING }}/gold-prize:${{ github.run_number }}
-          docker push ${{ secrets.ECR_PUSH_STRING }}/gold-prize:latest
+          docker push ${{ secrets.ECR_PUSH_STRING }}/vendure-sf:${{ github.run_number }}
+          docker push ${{ secrets.ECR_PUSH_STRING }}/vendure-sf:latest
