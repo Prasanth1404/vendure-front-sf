@@ -1,8 +1,8 @@
 export const environment = {
     production: true,
-    apiHost: 'https://api.example.com',
+    apiHost: 'https://api.prasanth.space',
     apiPort: 443,
     shopApiPath: 'shop-api',
     baseHref: '/',
-    tokenMethod: 'cookie',
+    tokenMethod: 'bearer',
 };
